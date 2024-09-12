@@ -31,13 +31,15 @@ public class ProductController {
         return productService.getList(pageRequestDTO);
     }
 
-    @PostMapping("/")
-    public Map<String, Long> register(ProductDTO productDTO){
+    @PostMapping("")
+    public Map<String, Long> register(ProductDTO productDTO) throws InterruptedException {
         log.info("register : " + productDTO);
         List<MultipartFile> files = productDTO.getFiles();
         List<String> uploadFileNames = fileUtil.saveFiles(files);
         productDTO.setUploadFileNames(uploadFileNames);
         log.info(uploadFileNames);
+
+        Thread.sleep(1000);
 
         // 서비스 호출
         Long pno = productService.register(productDTO);
