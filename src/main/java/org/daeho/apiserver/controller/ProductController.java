@@ -10,6 +10,7 @@ import org.daeho.apiserver.service.ProductService;
 import org.daeho.apiserver.util.CustomFileUtil;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,7 @@ public class ProductController {
     private final CustomFileUtil fileUtil;
 
     @GetMapping("/list")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')") // 임시로 권한 설정
     public PageResponseDTO<ProductDTO> list(PageRequestDTO pageRequestDTO){
         log.info("list..............."+pageRequestDTO);
         return productService.getList(pageRequestDTO);

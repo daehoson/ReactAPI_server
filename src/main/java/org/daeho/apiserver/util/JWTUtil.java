@@ -35,6 +35,13 @@ public class JWTUtil {
         Map<String, Object> claim = null;
         try {
             SecretKey key = Keys.hmacShaKeyFor(JWTUtil.key.getBytes("UTF-8"));
+
+            claim = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token) // 파싱 및 검증, 실패 시 에러
+                    .getBody();
+
         }catch (MalformedJwtException malformedJwtException){
             throw new CustomJWTException("MalFormed");
         }catch (ExpiredJwtException expiredJwtException){

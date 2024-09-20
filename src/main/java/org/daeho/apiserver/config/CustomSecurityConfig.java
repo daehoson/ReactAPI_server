@@ -5,8 +5,10 @@ import lombok.extern.log4j.Log4j2;
 import org.daeho.apiserver.security.filter.JWTCheckFilter;
 import org.daeho.apiserver.security.handler.APILoginFailHandler;
 import org.daeho.apiserver.security.handler.APILoginSuccessHandler;
+import org.daeho.apiserver.security.handler.CustomAccessDeniedHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +25,7 @@ import java.util.List;
 @Configuration
 @Log4j2
 @RequiredArgsConstructor
+@EnableMethodSecurity
 public class CustomSecurityConfig {
 
     @Bean
@@ -47,6 +50,10 @@ public class CustomSecurityConfig {
 
         http.addFilterBefore(new JWTCheckFilter(),
                 UsernamePasswordAuthenticationFilter.class); // JWT체크
+
+        http.exceptionHandling(config -> {
+            config.accessDeniedHandler(new CustomAccessDeniedHandler());
+        });
 
         return http.build();
     }
