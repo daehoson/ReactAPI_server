@@ -15,7 +15,8 @@ import java.util.Map;
 @Log4j2
 public class APIRefreshController {
     @RequestMapping("/api/member/refresh")
-    public Map<String, Object> refresh(@RequestHeader("Authorization") String authHeader, String refreshToken){
+    public Map<String, Object> refresh(@RequestHeader("Authorization") String authHeader,
+                                       String refreshToken){ // authHeader = accessToken
         if(refreshToken == null){
             throw new CustomJWTException("NULL_REFRESH");
         }
